@@ -43,7 +43,7 @@ class Reader:
         self.get_digit = getDigits()
 
     def turn_on_read(self):
-        last_digits = None
+        last_digits = "-1"
         while True:
             takeScreenshot(self.screenshot_buffer)
             new_digits = self.get_digit(self.screenshot_buffer)
