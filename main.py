@@ -55,6 +55,7 @@ class Reader:
                 print("Current sleep lag is changed into %.1f s" % self.sleep_lag)
                 print('-'*81)
             else:
+                self.sleep_lag /= self.sleep_factor ** .5
                 pressure = self.cast_digits_to_number(last_digits, new_digits)
                 print('-'*81)
                 print("New pressure of %.3e since %s elapsed, " % (
@@ -73,7 +74,10 @@ class Reader:
         old = int(old_digits)
         new = int(new_digits)
         if abs(new - old) > 500:
-            self.exponent -= 1
+            if new < old:
+                self.exponent -= 1 
+            else: 
+                self.exponent += 1
         return new * 10 ** (self.exponent - 2)
 
 
