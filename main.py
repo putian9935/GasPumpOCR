@@ -44,6 +44,7 @@ class Reader:
         while True:
             takeScreenshot(self.screenshot_buffer)
             new_digits = self.get_digit(self.screenshot_buffer)
+            print(new_digits)
             if len(new_digits) != 3: 
                 print('-'*81)
                 print("Failed to retrieve digits.")
