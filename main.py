@@ -1,9 +1,6 @@
-import cv2
-import time
 from time import perf_counter, sleep
-import sys
+from datetime import timedelta
 
-from matplotlib.pyplot import get
 from logger import Logger
 from takeAndroidScreenshot import takeScreenshot
 
@@ -11,7 +8,6 @@ from ImageProcessing import FrameProcessor
 
 from color_classification import ColorClassification
 from pre_process import preprocessing
-from datetime import timedelta
 
 
 def getDigits():

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import os
-from ImageProcessing.OpenCVUtils import inverse_colors, sort_contours
+from ImageProcessing.OpenCVUtils import sort_contours
 
 RESIZED_IMAGE_WIDTH = 20
 RESIZED_IMAGE_HEIGHT = 30

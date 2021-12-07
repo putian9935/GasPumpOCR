@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.core.defchararray import split
 from online_figure import OnlineFigure
 from time import sleep 
 import os.path 
