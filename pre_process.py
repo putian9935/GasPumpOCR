@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import cv2
 import numpy as np
-
+from PIL.PngImagePlugin import PngImageFile
 
 def find_out_roi(img, roi=None):
     """
@@ -30,14 +30,15 @@ def rotate_image(image, angle):
 
 
 def preprocessing(img, roi, rot_angle=0):
-    if type(img) == Image.Image:
-        return img.crop(roi)
+    # print(type(img))
+    if type(img) == PngImageFile:
+        return Image.fromarray(rotate_image(np.array(img.crop(roi)), rot_angle))
     else:
-        return rotate_image(np.rot90(img[roi[1]:roi[3], roi[0]:roi[2], ]), rot_angle)
+        return rotate_image(img[roi[1]:roi[3], roi[0]:roi[2], ], rot_angle)
 
 
 if __name__ == '__main__':
-    img = Image.open('Screenshot_1638871406.png')
-    find_out_roi(img, [529, 672, 701, 999])
-    plt.imshow(preprocessing(img, [529, 672, 701, 999]))
+    img = Image.open('1.png')
+    find_out_roi(img, [673, 375, 987, 534])
+    plt.imshow(preprocessing(img, [673, 375, 987, 534], 2))
     plt.show()

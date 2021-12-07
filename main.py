@@ -17,7 +17,7 @@ def getDigits():
 
     version = '_2_0'
     std_height = 90
-    roi = [529, 672, 701, 999]
+    roi = [673, 375, 987, 534]
     rot_angle = 2
 
     frameProcessor = FrameProcessor(std_height, version)
@@ -43,8 +43,12 @@ class Reader:
         while True: 
             takeScreenshot(self.screenshot_buffer)
             new_digits = self.get_digit(self.screenshot_buffer)
+            print(new_digits)
             if new_digits != last_digits:
                 self.sleep_lag *= self.sleep_factor
             else: 
                 print(new_digits)
             sleep(self.sleep_lag)
+
+reader = Reader(-5, "./1.png")
+reader.turn_on_read()
