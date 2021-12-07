@@ -44,7 +44,12 @@ class Reader:
         while True:
             takeScreenshot(self.screenshot_buffer)
             new_digits = self.get_digit(self.screenshot_buffer)
-
+            if len(new_digits) != 3: 
+                print('-'*81)
+                print("Failed to retrieve digits.")
+                print("Attempt another retrival in %.1f s" %
+                      (self.sleep_lag/2.))
+                print('-'*81)
             if new_digits == last_digits:
                 self.sleep_lag *= self.sleep_factor
                 print('-'*81)
@@ -52,11 +57,19 @@ class Reader:
                 print("Current sleep lag is changed into %.1f s" %
                       self.sleep_lag)
                 print('-'*81)
+                self.logger.log([perf_counter(), pressure])
             else:
                 self.sleep_lag /= self.sleep_factor ** .5
                 if self.sleep_lag < self.minimum_lag:
                     self.sleep_lag = self.minimum_lag
                 pressure = self.cast_digits_to_number(last_digits, new_digits)
+                if pressure == -1:
+                    print('-'*81)
+                    print("Failed to retrieve digits.")
+                    print("Attempt another retrival in %.1f s" %
+                        (self.sleep_lag/2.))
+                    print('-'*81)
+                    continue
                 print('-'*81)
                 print("New pressure of %.3e since %s elapsed, " % (
                     pressure,
@@ -73,11 +86,13 @@ class Reader:
         """
         old = int(old_digits)
         new = int(new_digits)
-        if abs(new - old) > 500:
-            if new < old:
+        if abs(new - old) > 50:
+            if (new * 10 - old) < 50:
                 self.exponent -= 1
-            else:
+            elif (old * 10 - new) < 50: 
                 self.exponent += 1
+            else:
+                return -1
         return new * 10 ** (self.exponent - 2)
 
 
