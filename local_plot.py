@@ -16,7 +16,7 @@ class LocalPlotter():
         self.fname = fname 
         self.last_line = 0 
 
-        self.fig = OnlineFigure(0,0, pause=1e-2)
+        self.fig = OnlineFigure(pause=1)
         self.fig.ax.set_title(r'Enclosure pressure')
         self.fig.ax.set_xlabel(r'Time elapsed $t\,/\,\mathrm{s}$')
         self.fig.ax.set_ylabel(r'Pressure $p\,/\,\mathrm{mbar}$')
