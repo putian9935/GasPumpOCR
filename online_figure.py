@@ -27,18 +27,19 @@ class OnlineFigure():
 
 
         self.line,  = self.ax.plot(self.x, self.y, '-')
+        self.ax.set_yscale('log')
 
     def rescale_y(self):
         ymin = min(self.y)
         if ymin > 0:
-            ymin *= .9
+            ymin *= .95
         else:
-            ymin *= 1.1
+            ymin *= 1.05
         ymax = max(self.y)
         if ymax > 0:
-            ymax *= 1.1
+            ymax *= 1.05
         else:
-            ymax *= .9
+            ymax *= .95
         self.ax.set_ylim(ymin, ymax)
         self.ax.ticklabel_format(axis='y', useOffset=False, style='sci', scilimits=(0,0))
         plt.pause(self.pause)
@@ -54,21 +55,21 @@ class OnlineFigure():
 
         _, xmax = self.ax.get_xlim()
         if new_x > xmax:
-            xmax = 1.1 * new_x
+            xmax = 1.05 * new_x
             self.ax.set_xlim(right=xmax)
 
         ymin, ymax = self.ax.get_ylim()
         if new_y > ymax:
             if new_y > 0:
-                ymax = 1.1 * new_y
+                ymax = 1.05 * new_y
             else:
-                ymax = .9 * new_y
+                ymax = .95 * new_y
             self.ax.set_ylim(ymin, ymax)
         if new_y < ymin:
             if new_y < 0:
-                ymin = 1.1 * new_y
+                ymin = 1.05 * new_y
             else:
-                ymin = .9 * new_y
+                ymin = .95 * new_y
             self.ax.set_ylim(ymin, ymax)
 
         self.display()
@@ -79,7 +80,7 @@ class OnlineFigure():
         self.y.extend(new_ys) 
         _, xmax = self.ax.get_xlim()
         if new_xs[-1] > xmax:
-            xmax = 1.1 * new_xs[-1]
+            xmax = 1.05 * new_xs[-1]
             self.ax.set_xlim(right=xmax)
 
         self.rescale_y()
