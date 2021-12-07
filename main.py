@@ -52,7 +52,7 @@ class Reader:
                 self.sleep_lag *= self.sleep_factor
                 print('-'*81)
                 print("No pressure change in the period.")
-                print("Current sleep lag is changed into %d s" % int(self.sleep_lag))
+                print("Current sleep lag is changed into %.1f s" % self.sleep_lag)
                 print('-'*81)
             else:
                 pressure = self.cast_digits_to_number(last_digits, new_digits)
