@@ -87,6 +87,8 @@ class Reader:
         """
         old = int(old_digits)
         new = int(new_digits)
+        if new < 100: # must be something wrong
+            return -1 
         if old > 0 and abs(new - old) > 50:
             if 0 < (new * 10 - old) < 50:
                 self.exponent -= 1
