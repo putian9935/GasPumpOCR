@@ -50,6 +50,10 @@ class Reader:
 
             if new_digits == last_digits:
                 self.sleep_lag *= self.sleep_factor
+                print('-'*81)
+                print("No pressure change in the period.")
+                print("Current sleep lag is changed into %d s" % int(self.sleep_lag))
+                print('-'*81)
             else:
                 pressure = self.cast_digits_to_number(last_digits, new_digits)
                 print('-'*81)
