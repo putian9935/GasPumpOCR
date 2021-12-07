@@ -42,5 +42,4 @@ if not fname:
 lp = LocalPlotter(os.path.join(path, fname))
 while True:
     lp.update()
-    input()
     sleep(1)
