@@ -58,7 +58,8 @@ class Reader:
                 print("Current sleep lag is changed into %.1f s" %
                       self.sleep_lag)
                 print('-'*81)
-                self.logger.log([perf_counter(), pressure])
+                if pressure >0:
+                    self.logger.log([perf_counter(), pressure])
             else:
                 self.sleep_lag /= self.sleep_factor ** .5
                 if self.sleep_lag < self.minimum_lag:
