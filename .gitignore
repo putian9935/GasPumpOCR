@@ -1,3 +1,5 @@
 crops
 .idea
 *.pyc
+/*.png
+/*.jpg
