@@ -88,9 +88,9 @@ class Reader:
         old = int(old_digits)
         new = int(new_digits)
         if old > 0 and abs(new - old) > 50:
-            if (new * 10 - old) < 50:
+            if 0 < (new * 10 - old) < 50:
                 self.exponent -= 1
-            elif (old * 10 - new) < 50: 
+            elif 0 < (old * 10 - new) < 50: 
                 self.exponent += 1
             else:
                 return -1

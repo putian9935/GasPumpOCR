@@ -41,7 +41,6 @@ class OnlineFigure():
         else:
             ymax *= .95
         self.ax.set_ylim(ymin, ymax)
-        self.ax.ticklabel_format(axis='y', useOffset=False, style='sci', scilimits=(0,0))
         plt.pause(self.pause)
 
 
