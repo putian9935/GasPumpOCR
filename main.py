@@ -53,7 +53,7 @@ class Reader:
             else:
                 pressure = self.cast_digits_to_number(last_digits, new_digits)
                 print('-'*81)
-                print("New pressure of %s since %s elapsed, " % (
+                print("New pressure of %.3e since %s elapsed, " % (
                     pressure,
                     str(timedelta(seconds=perf_counter()))
                 ))
@@ -70,7 +70,7 @@ class Reader:
         new = int(new_digits)
         if abs(new - old) > 500:
             self.exponent -= 1
-        return new * 10 ** self.exponent
+        return new * 10 ** (self.exponent - 2)
 
 
 reader = Reader(-5, "./1.png")
