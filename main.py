@@ -34,11 +34,12 @@ def getDigits():
 
 
 class Reader:
-    def __init__(self, initial_exponent, screenshot_buffer, sleep_init=1):
+    def __init__(self, initial_exponent, screenshot_buffer, sleep_init=1, minimum_lag=1):
         self.exponent = initial_exponent
         self.logger = Logger()
         self.sleep_factor = 1.1
         self.sleep_lag = sleep_init
+        self.minimum_lag = minimum_lag
         self.screenshot_buffer = screenshot_buffer
         self.get_digit = getDigits()
 
@@ -52,17 +53,20 @@ class Reader:
                 self.sleep_lag *= self.sleep_factor
                 print('-'*81)
                 print("No pressure change in the period.")
-                print("Current sleep lag is changed into %.1f s" % self.sleep_lag)
+                print("Current sleep lag is changed into %.1f s" %
+                      self.sleep_lag)
                 print('-'*81)
             else:
                 self.sleep_lag /= self.sleep_factor ** .5
+                if self.sleep_lag < self.minimum_lag:
+                    self.sleep_lag = self.minimum_lag
                 pressure = self.cast_digits_to_number(last_digits, new_digits)
                 print('-'*81)
                 print("New pressure of %.3e since %s elapsed, " % (
                     pressure,
                     str(timedelta(seconds=perf_counter()))
                 ))
-                print("Current sleep lag is %d s" % int(self.sleep_lag))
+                print("Current sleep lag is %.1f s" % self.sleep_lag)
                 print('-'*81)
                 self.logger.log([perf_counter(), pressure])
                 last_digits = new_digits
@@ -75,8 +79,8 @@ class Reader:
         new = int(new_digits)
         if abs(new - old) > 500:
             if new < old:
-                self.exponent -= 1 
-            else: 
+                self.exponent -= 1
+            else:
                 self.exponent += 1
         return new * 10 ** (self.exponent - 2)
 
