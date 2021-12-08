@@ -1,11 +1,13 @@
+from typing import cast
 import matplotlib.pyplot as plt
 from collections.abc import Iterable
 import matplotlib as mpl 
+import matplotlib.dates as md 
 
 mpl.rc('font', size=6)  # should be smaller so as others can see the computer 
 
 class OnlineFigure():
-    def __init__(self, x=None, y=None, pause=.5):
+    def __init__(self, x=None, y=None, pause=.5, cast_time=False):
         def construct_lst(arr):
             if isinstance(arr, Iterable):
                 ret = [_ for _ in arr]
@@ -20,6 +22,7 @@ class OnlineFigure():
         self.x = construct_lst(x)
         self.y = construct_lst(y)
         self.pause = pause
+        self.cast_time = cast_time
         if len(self.x) != len(self.y):
             raise Exception('Unequal length in x and y arrays')
 
@@ -41,11 +44,17 @@ class OnlineFigure():
         else:
             ymax *= .95
         self.ax.set_ylim(ymin, ymax)
-        plt.pause(self.pause)
 
 
     def display(self):
         self.line.set_data(self.x, self.y)
+        if self.cast_time:
+            td = self.x[-1] - self.x[0]
+            self.ax.set_xlim(self.x[0], self.x[0] + td * 1.05)
+            self.ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
+            plt.setp(self.ax.get_xticklabels(), rotation=45)
+            
+        plt.tight_layout()
         plt.pause(self.pause)
 
     def append(self, new_x, new_y):
@@ -77,10 +86,12 @@ class OnlineFigure():
     def appendln(self, new_xs, new_ys):
         self.x.extend(new_xs) 
         self.y.extend(new_ys) 
-        _, xmax = self.ax.get_xlim()
-        if new_xs[-1] > xmax:
-            xmax = 1.05 * new_xs[-1]
-            self.ax.set_xlim(right=xmax)
+        
+        if not self.cast_time:
+            _, xmax = self.ax.get_xlim()
+            if new_xs[-1] > xmax:
+                xmax = 1.05 * new_xs[-1]
+                self.ax.set_xlim(right=xmax)
 
         self.rescale_y()
 
