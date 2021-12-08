@@ -31,7 +31,7 @@ class FrameProcessor:
         if self.debug:
             import matplotlib.pyplot as plt
             plt.figure()
-            plt.imshow(self.img)
+            plt.imshow(cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR))  # cv2 works in BGR
             plt.show()
         self.original, self.width = self.resize_to_height(self.height)
         self.img = self.original.copy()
@@ -58,14 +58,13 @@ class FrameProcessor:
         return k_nearest
 
     def process_image_plain(self, transformer):
-
         self.img = self.original.copy()
 
         inverse = transformer(self.original).astype(np.uint8)
         if self.debug:
             import matplotlib.pyplot as plt
             plt.figure()
-            plt.imshow(inverse)
+            plt.imshow(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
             plt.show()
         # Find the lcd digit contours
         contours, _ = cv2.findContours(
@@ -195,7 +194,7 @@ class FrameProcessor:
                        RESIZED_IMAGE_HEIGHT))*255
         if self.debug:
             import matplotlib.pyplot as plt
-            plt.imshow(digit_mat)
+            plt.imshow(np.repeat(imgROIResized[:, :, None], 3, axis=2))
             plt.show()
         # Reshape the image
         npaROIResized = imgROIResized.reshape(

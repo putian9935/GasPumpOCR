@@ -15,8 +15,10 @@ def getDigits():
 
     version = '_2_0'
     std_height = 90
+    ####### CHANGE below for ROI and angle #######
     roi = [673, 375, 987, 534]
     rot_angle = 2
+    ##############################################
 
     frameProcessor = FrameProcessor(std_height, version)
     def preprocessor(_): return preprocessing(_, roi, rot_angle)
@@ -100,5 +102,9 @@ class Reader:
         return new * 10 ** (self.exponent - 2)
 
 
-reader = Reader(-5, "./1.png")
+reader = Reader(
+##### CHANGE below for initial exponent ######
+    -5
+##############################################
+, "./1.png")
 reader.turn_on_read()

@@ -3,13 +3,11 @@ from PIL import Image
 import matplotlib.pyplot as plt 
 
 from sklearn.cluster import KMeans
-from mpl_toolkits.mplot3d import Axes3D
 
 
 class ColorClassification:
     def __init__(self):
-
-        img = Image.open('f.png').convert('RGB')
+        img = Image.open('model.png').convert('RGB')
         img.thumbnail((25, 50))
         self.arr = np.array(img)
         self.X = self.arr.reshape(self.arr.shape[0] * self.arr.shape[1], 3)
@@ -17,13 +15,12 @@ class ColorClassification:
         self.est.fit(self.X)
     
     def show_model(self):
-        fig = plt.figure(figsize=(4, 3))
-        ax = Axes3D(fig, rect=[0, 0, 0.95, 1])
-
+        plt.figure(figsize=(4, 3))
+        plt.imshow(self.arr)
+                
         labels = self.est.labels_
-        plt.scatter(self.X[:,0], self.X[:,1], self.X[:,2], c=labels.astype(float))
         ans = labels.reshape(self.arr.shape[0], self.arr.shape[1])
-        plt.figure()
+        plt.figure(figsize=(4, 3))
         plt.imshow(ans)
         plt.show() 
     
@@ -47,7 +44,8 @@ class ColorClassification:
 
 
 if __name__ == '__main__':
-    img = Image.open('Screenshot_1638873926.png').convert('RGB')
+    img = Image.open('test/Screenshot_1638873926.png').convert('RGB')
     img.thumbnail((500, 500))
     model = ColorClassification() 
+    model.show_model()
     model.test(img)
