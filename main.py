@@ -90,11 +90,11 @@ class Reader:
         new = int(new_digits)
         if new < 100: # must be something wrong
             return -1 
-        if old > 0 and abs(new - old) > 50:
-            if 0 < (new * 10 - old) < 50:
+        if old > 0 and abs(new - old) > 20:
+            if 0 < (new * 10 - old) < 20:
+                self.exponent += 1  ## note that self.exponent < 0
+            elif 0 < (old * 10 - new) < 20: 
                 self.exponent -= 1
-            elif 0 < (old * 10 - new) < 50: 
-                self.exponent += 1
             else:
                 return -1
         return new * 10 ** (self.exponent - 2)
