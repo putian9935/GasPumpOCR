@@ -8,7 +8,6 @@ from takeAndroidScreenshot import takeScreenshot
 
 from ImageProcessing import FrameProcessor
 
-from color_classification import ColorClassification
 from pre_process import preprocessing
 
 
@@ -27,15 +26,11 @@ def getDigits():
 
     def process_func(file_name):
         frameProcessor.set_image(file_name, preprocessor)
-        output = frameProcessor.process_image_plain(
-            ColorClassification(dark=True).convert_to_01)
+        output = frameProcessor.process_image_plain()
         return output
     return process_func
 
-print(getDigits()('dark.png'))
-print(getDigits()('Screenshot_1638976674.png'))
-print(getDigits()('Screenshot_1638976675.png'))
-print(getDigits()('Screenshot_1638976676.png'))
+
 
 class Reader:
     def __init__(self, initial_exponent, screenshot_buffer, sleep_init=1, minimum_lag=1):
@@ -110,7 +105,7 @@ class Reader:
 
 reader = Reader(
 ##### CHANGE below for initial exponent ######
-    -5
+    -6
 ##############################################
 , "./1.png")
 reader.turn_on_read()

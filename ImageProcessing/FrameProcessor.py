@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import os
 from ImageProcessing.OpenCVUtils import sort_contours
+from ImageProcessing.erode import remove_bridge
+from color_classification import ColorClassification
 
 RESIZED_IMAGE_WIDTH = 20
 RESIZED_IMAGE_HEIGHT = 30
@@ -11,6 +13,7 @@ CROP_DIR = 'crops'
 class FrameProcessor:
     def __init__(self, height, version, debug=False, write_digits=False):
         self.debug = debug
+        
         self.version = version
         self.height = height
         self.file_name = None
@@ -21,6 +24,9 @@ class FrameProcessor:
 
         self.knn = self.train_knn(self.version)
 
+        self.bright_converter = ColorClassification().convert_to_01
+        self.dark_converter = ColorClassification(dark=True).convert_to_01
+
     def set_image(self, file_name, preprocessing=None):
         self.file_name = file_name
         self.img = cv2.imread(file_name)
@@ -28,6 +34,9 @@ class FrameProcessor:
         if preprocessing:
             self.img = preprocessing(self.img)
 
+        # use B channel
+        self.dark = (np.mean(self.img, axis=(0,1))[0] > 90)            
+            
         if self.debug:
             import matplotlib.pyplot as plt
             plt.figure()
@@ -58,12 +67,18 @@ class FrameProcessor:
 
         return k_nearest
 
-    def process_image_plain(self, transformer):
+    def process_image_plain(self, transformer=None):
+        if isinstance(transformer, type(None)): # for backward compatibility 
+            if self.dark: 
+                transformer = self.dark_converter 
+            else: 
+                transformer = self.bright_converter 
+
         self.img = self.original.copy()
         inverse = transformer(self.original).astype(np.uint8)
-        
-        from ImageProcessing import erode 
-        inverse = erode.remove_bridge(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
+
+        if self.dark:
+            inverse = remove_bridge(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
         
         
         if self.debug:
