@@ -12,7 +12,7 @@ class ColorClassification:
             
             img.thumbnail((25, 50))
         else:
-            img = Image.open('d.png').convert('RGB')
+            img = Image.open('dark_model.png').convert('RGB')
         self.arr = np.array(img)
         self.X = self.arr.reshape(self.arr.shape[0] * self.arr.shape[1], 3)
         if not dark:
