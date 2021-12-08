@@ -6,12 +6,20 @@ from sklearn.cluster import KMeans
 
 
 class ColorClassification:
-    def __init__(self):
-        img = Image.open('model.png').convert('RGB')
-        img.thumbnail((25, 50))
+    def __init__(self, dark=False):
+        if not dark:
+            img = Image.open('model.png').convert('RGB')
+            
+            img.thumbnail((25, 50))
+        else:
+            img = Image.open('d.png').convert('RGB')
         self.arr = np.array(img)
         self.X = self.arr.reshape(self.arr.shape[0] * self.arr.shape[1], 3)
-        self.est = KMeans(n_clusters=2, random_state=42)
+        if not dark:
+            self.est = KMeans(n_clusters=2, random_state=42)
+        else: 
+            self.est = KMeans(n_clusters=4, random_state=42)
+            print('jhello')
         self.est.fit(self.X)
     
     def show_model(self):
@@ -44,8 +52,11 @@ class ColorClassification:
 
 
 if __name__ == '__main__':
-    img = Image.open('test/Screenshot_1638873926.png').convert('RGB')
+    # img = Image.open('test/Screenshot_1638873926.png').convert('RGB')
+    img = Image.open('d.png').convert('RGB')
     img.thumbnail((500, 500))
-    model = ColorClassification() 
+    model = ColorClassification(dark=True) 
     model.show_model()
     model.test(img)
+    
+    

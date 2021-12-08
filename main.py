@@ -1,6 +1,8 @@
 from time import perf_counter, sleep
 from datetime import timedelta
 
+from matplotlib.pyplot import get
+
 from logger import Logger
 from takeAndroidScreenshot import takeScreenshot
 
@@ -16,20 +18,24 @@ def getDigits():
     version = '_2_0'
     std_height = 90
     ####### CHANGE below for ROI and angle #######
-    roi = [673, 375, 987, 534]
-    rot_angle = 2
+    roi = [643, 375, 957, 534]
+    rot_angle = 2.5
     ##############################################
 
-    frameProcessor = FrameProcessor(std_height, version)
+    frameProcessor = FrameProcessor(std_height, version, )
     def preprocessor(_): return preprocessing(_, roi, rot_angle)
 
     def process_func(file_name):
         frameProcessor.set_image(file_name, preprocessor)
         output = frameProcessor.process_image_plain(
-            ColorClassification().convert_to_01)
+            ColorClassification(dark=True).convert_to_01)
         return output
     return process_func
 
+print(getDigits()('dark.png'))
+print(getDigits()('Screenshot_1638976674.png'))
+print(getDigits()('Screenshot_1638976675.png'))
+print(getDigits()('Screenshot_1638976676.png'))
 
 class Reader:
     def __init__(self, initial_exponent, screenshot_buffer, sleep_init=1, minimum_lag=1):

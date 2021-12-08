@@ -38,6 +38,7 @@ class FrameProcessor:
 
     def resize_to_height(self, height):
         r = self.img.shape[0] / float(height)
+        
         dim = (int(self.img.shape[1] / r), height)
         img = cv2.resize(self.img, dim, interpolation=cv2.INTER_AREA)
         return img, dim[0]
@@ -59,12 +60,17 @@ class FrameProcessor:
 
     def process_image_plain(self, transformer):
         self.img = self.original.copy()
-
         inverse = transformer(self.original).astype(np.uint8)
+        
+        from ImageProcessing import erode 
+        inverse = erode.remove_bridge(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
+        
+        
         if self.debug:
             import matplotlib.pyplot as plt
             plt.figure()
             plt.imshow(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
+            plt.title("01 figure")
             plt.show()
         # Find the lcd digit contours
         contours, _ = cv2.findContours(
