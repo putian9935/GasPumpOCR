@@ -1,8 +1,6 @@
 from time import perf_counter, sleep
 from datetime import timedelta
 
-from matplotlib.pyplot import get
-
 from logger import Logger
 from takeAndroidScreenshot import takeScreenshot
 

@@ -19,7 +19,6 @@ class ColorClassification:
             self.est = KMeans(n_clusters=2, random_state=42)
         else: 
             self.est = KMeans(n_clusters=4, random_state=42)
-            print('jhello')
         self.est.fit(self.X)
     
     def show_model(self):
