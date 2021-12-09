@@ -41,8 +41,8 @@ class LocalMultiPlotter():
         self.fname_temp = tempfname
         self.last_line = 0
         self.last_line_temp = 0
-        self.main = main 
-        self.twin = twin 
+        self.main = main
+        self.twin = twin
 
         self.initial_time = datetime.strptime(
             os.path.split(fname)[-1][4:-4], "%Y-%m-%d-%H%M%S")
@@ -60,9 +60,13 @@ class LocalMultiPlotter():
         self.fig.show()
 
     def update(self):
-        data = np.genfromtxt(self.fname, delimiter=',', usecols=[0, 1])
+        try:
+            data = np.genfromtxt(self.fname, delimiter=',', usecols=[0, 1])
+        except PermissionError:  # possibly writing this file
+            return 
+            
         if self.last_line == len(data):  # nothing to update
-            return False
+            return
 
         time, obs = data[self.last_line:].T
         time = [self.initial_time + timedelta(seconds=td) for td in time]
@@ -71,25 +75,25 @@ class LocalMultiPlotter():
         self.fig.ax_main.set_title(
             r'Enclosure pressure $%s\,\mathrm{mbar}$' % sci2tex("%.2e" % data[-1, 1]))
         self.last_line = len(data)
-        return True
 
     def update_tmp(self):
-        data = np.genfromtxt(self.fname_temp, delimiter=',',
+        try:
+            data = np.genfromtxt(self.fname_temp, delimiter=',',
                              usecols=[0, 2, 3, 4, 5])
-   
+        except PermissionError:  # possibly writing this file
+            return 
+
         if self.last_line_temp == len(data):  # nothing to update
-            # self.fig.display()  # just make it sleep a while
-            return False
+            return
 
         time, *obs = data[self.last_line_temp:].T
-        time = [datetime.utcfromtimestamp(ts)+timedelta(hours=8) for ts in time]
-        
-        for ob, twin_idx in zip(obs,self.twin):
-            
+        time = [datetime.utcfromtimestamp(
+            ts)+timedelta(hours=8) for ts in time]
+
+        for ob, twin_idx in zip(obs, self.twin):
             self.fig.appendln(time, ob, twin_idx)
 
         self.last_line_temp = len(data)
-        return True
 
 
 path = './'
