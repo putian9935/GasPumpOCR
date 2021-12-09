@@ -1,16 +1,12 @@
-from posixpath import split
-from typing import cast
 import numpy as np
 from online_figure import OnlineFigure
-from time import sleep
 import os.path
 import os
-import matplotlib.dates as md
 from datetime import datetime, timedelta
 
-def get_latest_file():
+def get_latest_file(path='.'):
     return sorted(
-        [f for f in os.listdir('.') if os.path.isfile(f)
+        [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))
          if f.startswith('log@')],
         key=lambda f: ''.join(f[4:-4].split('-'))
     )[-1]
