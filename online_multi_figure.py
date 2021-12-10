@@ -59,7 +59,7 @@ class OnlineMultiFigure():
             plt.setp(self.ax_main.get_xticklabels(), rotation=45)
 
     def show(self):
-        self.fig.rescale_y()
+        self.rescale_y()
         plt.tight_layout()
         plt.pause(self.pause)
 

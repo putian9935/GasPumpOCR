@@ -56,7 +56,6 @@ class LocalMultiPlotter():
 
         self.update()
         self.update_tmp()
-        self.fig.rescale_y()
         self.fig.show()
 
     def update(self):
