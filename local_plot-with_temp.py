@@ -25,7 +25,7 @@ def get_latest_temp_file(path='.'):
 def sci2tex(sci_str):
     r"""Convert a sci string into tex style
 
-    E.g. 
+    E.g.
     1.21e-7 to 1.21\times10^{-7}
     """
     splitted = tuple(sci_str.split('e'))
@@ -62,8 +62,8 @@ class LocalMultiPlotter():
         try:
             data = np.genfromtxt(self.fname, delimiter=',', usecols=[0, 1])
         except PermissionError:  # possibly writing this file
-            return 
-            
+            return
+
         if self.last_line == len(data):  # nothing to update
             return
 
@@ -80,7 +80,7 @@ class LocalMultiPlotter():
             data = np.genfromtxt(self.fname_temp, delimiter=',',
                              usecols=[0, 2, 3, 4, 5])
         except PermissionError:  # possibly writing this file
-            return 
+            return
 
         if self.last_line_temp == len(data):  # nothing to update
             return
@@ -99,7 +99,7 @@ path = './'
 fname = get_latest_file()
 print("Pressure file: ", fname)
 
-temppath = r'C:\Users\Administrator\Desktop\current\FileTransfer'
+temppath = r'Q:\strontium\data\2021\20211207_enclosure_bake\bake-out-data'
 tempname = get_latest_temp_file(path=temppath)
 print("Temperature file:", tempname)
 

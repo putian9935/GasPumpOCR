@@ -15,7 +15,7 @@ def getDigits():
     version = '_2_0'
     std_height = 90
     ####### CHANGE below for ROI and angle #######
-    roi = [643, 375, 957, 534]
+    roi = [623, 375, 957, 554]
     rot_angle = 2.5
     ##############################################
 
@@ -45,8 +45,8 @@ class Reader:
         while True:
             takeScreenshot(self.screenshot_buffer)
             new_digits = self.get_digit(self.screenshot_buffer)
-            
-            if len(new_digits) != 3: 
+
+            if len(new_digits) != 3:
                 print('-'*81)
                 print("Failed to retrieve digits.")
                 print("Attempt another retrival in %.1f s" %
@@ -90,11 +90,11 @@ class Reader:
         old = int(old_digits)
         new = int(new_digits)
         if new < 100: # must be something wrong
-            return -1 
+            return -1
         if old > 0 and abs(new - old) > 20:
             if 0 < (new * 10 - old) < 20:
                 self.exponent += 1  ## note that self.exponent < 0
-            elif 0 < (old * 10 - new) < 20: 
+            elif 0 < (old * 10 - new) < 20:
                 self.exponent -= 1
             else:
                 return -1
