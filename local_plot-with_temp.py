@@ -79,8 +79,10 @@ class LocalMultiPlotter():
         try:
             data = np.genfromtxt(self.fname_temp, delimiter=',',
                              usecols=[0, 2, 3, 4, 5])
-        except PermissionError:  # possibly writing this file
+
+        except (PermissionError, OSError):  # possibly writing this file
             return
+
 
         if self.last_line_temp == len(data):  # nothing to update
             return
