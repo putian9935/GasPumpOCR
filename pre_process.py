@@ -41,6 +41,6 @@ def preprocessing(img, roi, rot_angle=0):
 
 if __name__ == '__main__':
     img = Image.open('1.png')
-    find_out_roi(img, [623, 375, 957, 554])
-    plt.imshow(preprocessing(img, [623, 375, 957, 554], 2.5))
+    find_out_roi(img, [677, 485, 1033, 677])
+    plt.imshow(preprocessing(img,  [677, 485, 1033, 677], 1))
     plt.show()

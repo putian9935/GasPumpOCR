@@ -13,7 +13,7 @@ CROP_DIR = 'crops'
 class FrameProcessor:
     def __init__(self, height, version, debug=False, write_digits=False):
         self.debug = debug
-        
+
         self.version = version
         self.height = height
         self.file_name = None
@@ -35,8 +35,8 @@ class FrameProcessor:
             self.img = preprocessing(self.img)
 
         # use B channel
-        self.dark = (np.mean(self.img, axis=(0,1))[0] > 90)            
-            
+        self.dark = (np.mean(self.img, axis=(0,1))[0] > 90)
+
         if self.debug:
             import matplotlib.pyplot as plt
             plt.figure()
@@ -47,7 +47,7 @@ class FrameProcessor:
 
     def resize_to_height(self, height):
         r = self.img.shape[0] / float(height)
-        
+
         dim = (int(self.img.shape[1] / r), height)
         img = cv2.resize(self.img, dim, interpolation=cv2.INTER_AREA)
         return img, dim[0]
@@ -68,21 +68,23 @@ class FrameProcessor:
         return k_nearest
 
     def process_image_plain(self, transformer=None):
-        if isinstance(transformer, type(None)): # for backward compatibility 
-            if self.dark: 
-                transformer = self.dark_converter 
-            else: 
-                transformer = self.bright_converter 
+        if isinstance(transformer, type(None)): # for backward compatibility
+            if self.dark:
+                transformer = self.dark_converter
+            else:
+                transformer = self.bright_converter
 
         self.img = self.original.copy()
         inverse = transformer(self.original).astype(np.uint8)
 
         if self.dark:
             inverse = remove_bridge(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
-        
-        
-        if self.debug:
+        else:
             import matplotlib.pyplot as plt
+            kernel = np.ones((2, 2), np.uint8)
+            inverse = cv2.dilate(inverse, kernel, iterations=3)
+
+        if self.debug:
             plt.figure()
             plt.imshow(np.repeat((255-inverse*255)[:, :, None], 3, axis=2))
             plt.title("01 figure")
@@ -114,7 +116,7 @@ class FrameProcessor:
 
             aspect = float(w) / h
             size = w * h
-            
+
             # If it's small and it's not a square, kick it out
             if size < 20 * 100 and (aspect < 1 - aspect_buffer and aspect > 1 + aspect_buffer):
                 continue
