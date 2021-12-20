@@ -52,7 +52,7 @@ class Reader:
                 print("Attempt another retrival in %.1f s" %
                       (self.sleep_lag/2.))
                 print('-'*81)
-            if new_digits == last_digits:
+            elif new_digits == last_digits:
                 self.sleep_lag *= self.sleep_factor
                 print('-'*81)
                 print("No pressure change in the period.")
